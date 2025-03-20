@@ -14,8 +14,8 @@ const mainNavItems: NavItem[] = [
         icon: LayoutGrid,
     },
     {
-        title: 'Events',
-        href: 'dashboard/events',
+        title: 'Roles',
+        href: '/roles',
         icon: Calendar,
     },
 ];
