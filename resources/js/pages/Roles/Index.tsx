@@ -1,4 +1,5 @@
 import { Head, Link, useForm, usePage } from "@inertiajs/react";
+import { PageProps as InertiaPageProps } from "@inertiajs/core";
 import AppLayout from "@/layouts/app-layout";
 import { BreadcrumbItem } from "@/types";
 import {
@@ -10,27 +11,38 @@ import {
     TableRow,
 } from "@/components/ui/table";
 import { Button } from "@headlessui/react";
-import { FormEventHandler } from "react";
+import { MouseEvent } from "react";
+
+// Define the Role interface
+interface Role {
+    id: number;
+    name: string;
+}
+
+// Extend Inertia's PageProps
+interface PageProps extends InertiaPageProps {
+    roles: Role[];
+}
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: "Roles",
-        href: "/roles",
+        href: "/Roles",
     },
 ];
 
 export default function RolesPage() {
-    const { roles } = usePage().props;
+    const { roles } = usePage<PageProps>().props;
     const { delete: destroy } = useForm();
-
-    const handleDelete: FormEventHandler<HTMLButtonElement> = (e, id) => {
+    
+    const handleDelete = (e: MouseEvent<HTMLButtonElement>, id: number) => {
         e.preventDefault();
-
+        
         if (confirm("Are you sure you want to delete this role?")) {
-            destroy(route('roles.destroy', id)); // Adjust the route helper as necessary
+            destroy(route('roles.destroy', id));
         }
     };
-
+    
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Roles" />
@@ -42,7 +54,7 @@ export default function RolesPage() {
                     </Button>
                 </Link>
             </div>
-
+            
             <Table className="mt-4">
                 <TableHeader>
                     <TableRow>
@@ -51,7 +63,7 @@ export default function RolesPage() {
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {roles.map((role) => (
+                    {roles?.map((role) => (
                         <TableRow key={role.id}>
                             <TableCell>{role.name}</TableCell>
                             <TableCell className="text-right space-x-2">

@@ -10,37 +10,60 @@ class RoleController extends Controller
 {
     public function index()
     {
-        // $roles = Role::get();
-        return Inertia::render('roles/index', [
-            'roles' => Role::latest()->get(),
+        $roles = Role::latest()->get();
+
+        return Inertia::render('Roles/Index', [
+            'roles' => $roles,
         ]);
     }
 
     public function create()
     {
-        return Inertia::render('roles/create');
+        return Inertia::render('Roles/Create');
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'name' => ['required',
-            'string',
-            'unique:roles,name'],
+            'name' => ['required', 'string', 'unique:roles,name'],
         ]);
 
         Role::create([
-            'name'=> $request->name,
+            'name' => $request->name,
         ]);
 
-        return Inertia::render('roles/index');
+        return redirect()->route('roles.index')->with('success', 'Role created successfully!');
     }
 
-    // delete role
     public function destroy($id)
     {
         $role = Role::findOrFail($id);
         $role->delete();
-        return Inertia::render('roles.index');
+
+        return redirect()->route('roles.index')->with('success', 'Role deleted successfully!');
     }
+
+    public function edit($id)
+    {
+        $role = Role::findOrFail($id);
+
+        return Inertia::render('Roles/Edit', [
+            'role' => $role,
+        ]);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'name' => 'required|string|unique:roles,name,' . $id,
+        ]);
+
+        $role = Role::findOrFail($id);
+        $role->update([
+            'name' => $request->name,
+        ]);
+
+        return redirect()->route('roles.index')->with('success', 'Role updated successfully!');
+    }
+
 }
