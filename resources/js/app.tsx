@@ -35,7 +35,7 @@ createInertiaApp({
                                 >
                                     Refresh Page
                                 </button>
-                                <a href="/" className='bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded transition'>
+                                <a href="/dashboard" className='bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded transition'>
                                     Go Back</a>
 
                             </div>

@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -15,15 +17,19 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::resource('roles' ,RoleController::class);
     Route::get('roles/{id}/delete',[ RoleController::class, 'destroy']);
-    // Route::get('roles', function () {
-    //     return Inertia::render('roles/index');
-    // })->name('roles.index');
-    // Route::get('/roles/create', function () {
-    //     return Inertia::render('roles/create');
-    // })->name('roles.create');
-    // Route::post('roles', function (){
-    //     return Inertia::render('');
-    // })->name('roles.store');
+    
+    // permissions
+    Route::resource('permissions', PermissionController::class);
+    Route::get('permissions/{id}/delete', [PermissionController::class,'destroy']);
+
+    // role-permission
+    Route::get('roles/{roleId}/give-permissions', [RoleController::class, 'addPermissionToRole']);
+    Route::put('roles/{roleId}/give-permissions', [RoleController::class, 'givePermissionToRole']);
+
+    // assign-roles
+    Route::get('users', [UserController::class,'index'])->name('users.index');
+    Route::get('/users/{user}/assign-role', [UserController::class, 'assignRole'])->name('users.assign-role');
+    Route::put('/users/{user}/assign-role', [UserController::class, 'updateRole'])->name('users.update-role');
 });
 
 // roles routes
