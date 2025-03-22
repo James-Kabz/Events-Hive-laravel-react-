@@ -3,11 +3,22 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 use Inertia\Inertia;
 use Spatie\Permission\Models\Permission;
 
-class PermissionController extends Controller
+class PermissionController extends Controller 
 {
+    // public static function middleware():array
+    // {
+    //     return [
+    //         new Middleware('permission:view permission',only: ['index']),
+    //         new Middleware('permission:delete permission',only: ['destroy']),
+    //         new Middleware('permission:create permission',only: ['create','store']),
+    //         new Middleware('permission:edit permission',only: ['update','store']),
+    //     ];
+    // }
     public function index ()
     {
         $permissions = Permission::latest()->get();

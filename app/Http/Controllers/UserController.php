@@ -11,12 +11,13 @@ class UserController extends Controller
 {
     public function index()
     {
-        $users = User::all();
-        
+        $users = User::with('roles')->get();
+
         return Inertia::render('Users/Index', [
-            'users'=> $users
+            'users' => $users,
         ]);
     }
+
 
     public function assignRole($userId)
     {
@@ -26,16 +27,16 @@ class UserController extends Controller
 
         $userRoles = $user->roles->pluck('name')->toArray();
 
-        return Inertia::render('Users/AssignRole' ,[
+        return Inertia::render('Users/AssignRole', [
             'user' => $user,
-            'roles'=> $roles,
-            'userRoles'=> $userRoles
+            'roles' => $roles,
+            'userRoles' => $userRoles
         ]);
     }
 
     public function updateRole($userId, Request $request)
     {
-        $request->validate(['roles' =>'array']);
+        $request->validate(['roles' => 'array']);
 
         $user = User::findOrFail($userId);
         $user->syncRoles($request->roles);

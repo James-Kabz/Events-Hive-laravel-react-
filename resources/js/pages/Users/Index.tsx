@@ -32,25 +32,31 @@ export default function UserIndex() {
             <Table className="mt-4">
                 <TableHeader>
                     <TableRow>
-                        <TableHead>ID</TableHead>
                         <TableHead>Name</TableHead>
                         <TableHead>Email</TableHead>
-                        <TableHead className="w-80 text-right">Actions</TableHead>
+                        <TableHead>Roles</TableHead>
+                        <TableHead className="text-right">Actions</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
                     {users.map((user) => (
                         <TableRow key={user.id}>
-                            <TableCell>{user.id}</TableCell>
                             <TableCell>{user.name}</TableCell>
                             <TableCell>{user.email}</TableCell>
+                            <TableCell>
+                                {user.roles.map((role) => (
+                                    <span key={role.id} className="inline-block bg-gray-200 text-gray-700 px-2 py-1 rounded mr-1">
+                                        {role.name}
+                                    </span>
+                                ))}
+                            </TableCell>
                             <TableCell className="text-right space-x-2">
                                 <Link href={`/users/${user.id}/assign-role`}>
                                     <Button className="bg-green-500 text-white px-2 py-1 rounded">
                                         Assign Roles
                                     </Button>
                                 </Link>
-                                <Link href={`/users/${user.id}/edit`}>
+                                {/* <Link href={`/users/${user.id}/edit`}>
                                     <Button className="bg-yellow-500 text-white px-2 py-1 rounded">
                                         Edit
                                     </Button>
@@ -60,7 +66,7 @@ export default function UserIndex() {
                                     onClick={() => alert(`Delete User ID: ${user.id}`)}
                                 >
                                     Delete
-                                </Button>
+                                </Button> */}
                             </TableCell>
                         </TableRow>
                     ))}
